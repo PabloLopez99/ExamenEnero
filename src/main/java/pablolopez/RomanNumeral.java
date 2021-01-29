@@ -1,17 +1,16 @@
 package pablolopez;
 
-import java.util.List;
 import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class RomanNumeral {
 
-    public static void main(String[] args) {
-        System.out.println(toRoman(1999));
-        System.out.println(toArabic("X"));
-    }
+
     private final static TreeMap<Integer, String> map = new TreeMap<Integer, String>();
 
+    private final static TreeMap<String, Integer> map2 = new TreeMap<String, Integer>();
     static {
+
         map.put(1000, "M");
         map.put(900, "CM");
         map.put(500, "D");
@@ -26,84 +25,77 @@ public class RomanNumeral {
         map.put(4, "IV");
         map.put(1, "I");
 
-    }
-    private static boolean isValidRoman(String num) {
+        map2.put("I",1);
+        map2.put("V",5);
+        map2.put("X",10);
+        map2.put("L",50);
+        map2.put("C",100);
+        map2.put("D",500);
+        map2.put("M",1000);
 
+    }
+
+    private static boolean isValidRoman(String num) {
+        if(num.equals("")){
+            return false;
+        }
         for (int k = 0; k < num.length(); k++) {
-            if (num.charAt(k) != 'I' &&
-                    num.charAt(k) != 'V' &&
-                    num.charAt(k) != 'X' &&
-                    num.charAt(k) != 'L' &&
-                    num.charAt(k) != 'C' &&
-                    num.charAt(k) != 'D' &&
-                    num.charAt(k) != 'M') {
-                return false;
-            }
+            if (checkChars(num, k)) return false;
         }
         return true;
     }
 
-    public static String toArabic(String s) {
+    private static boolean checkChars(String num, int k) {
+        if (num.charAt(k) != 'I' && num.charAt(k) != 'V' && num.charAt(k) != 'X' && num.charAt(k) != 'L' &&
+            num.charAt(k) != 'C' && num.charAt(k) != 'D' && num.charAt(k) != 'M') {
+            return true;
+        }
+        return false;
+    }
 
-        if (isValidRoman(s)) {
-
+    public static String toArabic(String s){
+        if(isValidRoman(s)){
             int Arabic = 0;
             int last_digit = 0;
             int current_digit = 0;
-
             for (int i = 0; i < s.length(); i++) {
-
-                if (s.charAt(i) == 'I') {
-                    current_digit = 1;
-                }
-                if (s.charAt(i) == 'V') {
-                    current_digit = 5;
-                }
-                if (s.charAt(i) == 'X') {
-                    current_digit = 10;
-                }
-                if (s.charAt(i) == 'L') {
-                    current_digit = 50;
-                }
-                if (s.charAt(i) == 'C') {
-                    current_digit = 100;
-                }
-                if (s.charAt(i) == 'D') {
-                    current_digit = 500;
-                }
-                if (s.charAt(i) == 'M') {
-                    current_digit = 1000;
-                }
-
-
-
+                current_digit = getCurrent_digit(s, current_digit, i);
                 if (last_digit < current_digit && last_digit != 0) {
                     current_digit -= last_digit;
                     Arabic -= last_digit;
                     Arabic += current_digit;
                     last_digit = current_digit;
-                    current_digit = 0;
                 } else {
                     last_digit = current_digit;
                     Arabic += current_digit;
-                    current_digit = 0;
                 }
+                current_digit = 0;
             }
 
-
             return String.valueOf(Arabic);
-
         }else{
-            return null;	
+            return null;
         }
+
     }
-
-
     public static String toRoman(int num){
-        int l =  map.floorKey(num);
-        if (num == l ) {
-            return map.get(num);
+        if (isValidArabic(num)){
+            int l =  map.floorKey(num);
+            return num == map.floorKey(num) ? map.get(num) : map.get(l) + toRoman(num - l);
+        }else{
+            return null;
         }
-        return map.get(l) + toRoman(num-l);
+
+    }
+    private static boolean isValidArabic(int num) {
+        return num > 0;
+    }
+    private static int getCurrent_digit(String s, int current_digit, int i) {
+        for (String key : map2.keySet()) current_digit = getCurrent_digit(s, current_digit, i, key);
+        return current_digit;
+    }
+    private static int getCurrent_digit(String s, int current_digit, int i, String key) {
+        if(String.valueOf(s.charAt(i)).equals(key))current_digit =(map2.get(key));
+        return current_digit;
     }
 }
