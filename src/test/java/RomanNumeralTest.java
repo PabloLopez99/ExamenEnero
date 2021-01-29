@@ -17,15 +17,12 @@ public class RomanNumeralTest {
         assertTrue(RomanNumeral.toArabic("")==null);
     }
 
-
     @Test
     public void testToRoman(){
         assertTrue(RomanNumeral.toRoman(10)=="X");
         assertTrue(RomanNumeral.toRoman(1999).equals("MCMXCIX"));
+        assertTrue(RomanNumeral.toRoman(2098).equals("MMXCVIII"));
         assertTrue(RomanNumeral.toRoman(-21)==null);
         assertTrue(RomanNumeral.toRoman(0)==null);
     }
-
-
-
 }

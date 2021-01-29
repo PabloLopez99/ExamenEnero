@@ -1,40 +1,15 @@
 package pablolopez;
-
 import java.util.TreeMap;
-import java.util.concurrent.atomic.AtomicInteger;
+
 
 public class RomanNumeral {
-
-
-    private final static TreeMap<Integer, String> map = new TreeMap<Integer, String>();
-
-    private final static TreeMap<String, Integer> map2 = new TreeMap<String, Integer>();
-    static {
-
-        map.put(1000, "M");
-        map.put(900, "CM");
-        map.put(500, "D");
-        map.put(400, "CD");
-        map.put(100, "C");
-        map.put(90, "XC");
-        map.put(50, "L");
-        map.put(40, "XL");
-        map.put(10, "X");
-        map.put(9, "IX");
-        map.put(5, "V");
-        map.put(4, "IV");
-        map.put(1, "I");
-
-        map2.put("I",1);
-        map2.put("V",5);
-        map2.put("X",10);
-        map2.put("L",50);
-        map2.put("C",100);
-        map2.put("D",500);
-        map2.put("M",1000);
-
-    }
-
+    private final static TreeMap<Integer, String> map = new TreeMap<Integer, String>(){{
+        put(1000, "M");put(900, "CM");put(500, "D");put(400, "CD");put(100, "C");put(90, "XC");
+        put(50, "L");put(40, "XL");put(10, "X");put(9, "IX");put(5, "V");put(4, "IV");put(1, "I");
+    }};
+    private final static TreeMap<String, Integer> map2 = new TreeMap<String, Integer>(){{
+        put("I",1);put("V",5);put("X",10);put("L",50);put("C",100);put("D",500);put("M",1000);
+    }};
     private static boolean isValidRoman(String num) {
         if(num.equals("")){
             return false;
@@ -44,7 +19,6 @@ public class RomanNumeral {
         }
         return true;
     }
-
     private static boolean checkChars(String num, int k) {
         if (num.charAt(k) != 'I' && num.charAt(k) != 'V' && num.charAt(k) != 'X' && num.charAt(k) != 'L' &&
             num.charAt(k) != 'C' && num.charAt(k) != 'D' && num.charAt(k) != 'M') {
@@ -52,7 +26,6 @@ public class RomanNumeral {
         }
         return false;
     }
-
     public static String toArabic(String s){
         if(isValidRoman(s)){
             int Arabic = 0;
